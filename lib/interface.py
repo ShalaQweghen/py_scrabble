@@ -20,15 +20,21 @@ class Interface:
 
 		action = input('\nPick an action: ')
 
-		if action 	== '0': self.print_read_me()
-		elif action == '1': self.start_against_comp()
-		elif action == '2': self.start_local_game()
-		elif action == '3': self.start_network_game()
-		elif action == '9': sys.exit()
-		else: self.give_main_options()
+		if action 	== '0':
+			self.print_read_me()
+		elif action == '1':
+			self.start_against_comp()
+		elif action == '2':
+			self.start_local_game()
+		elif action == '3':
+			self.start_network_game()
+		elif action == '9':
+			sys.exit()
+		else:
+			self.give_main_options()
 
 	def print_read_me(self):
-		readme = open('./lib/info.txt', 'r').read()
+		readme = open('info.txt', 'r').read()
 		print(readme)
 		self.give_main_options()
 
@@ -57,7 +63,6 @@ class Interface:
 			self.options['players'] = input('\n2, 3, or 4: ')
 
 		sock = socket.socket()
-		sock.setblocking(True)
 
 		host = ''
 		port = 12345
@@ -65,12 +70,14 @@ class Interface:
 		sock.bind((host, port))
 		sock.listen()
 
-		print('\nServer fired up on localhost:{}... Waiting for opponents...\n'.format(port))
+		print('\nServer fired up on {}:{}... Waiting for opponents...'.format(sock.getsockname()[0], port))
 
 		self.options['streams'] = []
 
 		for i in range(int(self.options['players']) - 1):
 			cli, addr = sock.accept()
+
+			print('\nConnected by {}:{}... Waiting for others...'.format(addr[0], addr[1]))
 
 			c_input = cli.makefile('r')
 			c_output = cli.makefile('w')
@@ -104,9 +111,15 @@ class Interface:
 
 		if action == '1': return {}
 		elif action == '2': return {'challenge': True}
-		elif not computer and action == '3': return {'time_limit': input('\nPlease enter the time limit in minutes: ')}
-		elif not computer and action == '4': return {'challenge_mode': True, 'time_limit': input('\nPlease enter the time limit in minutes: ')}
-		elif continuable and action == '5': return {'load_game': True}
-		elif action == '9': self.give_main_options()
-		elif action == '0': sys.exit()
-		else: self.give_secondary_options(continuable, computer)
+		elif not computer and action == '3':
+			return {'time_limit': input('\nPlease enter the time limit in minutes: ')}
+		elif not computer and action == '4':
+			return {'challenge_mode': True, 'time_limit': input('\nPlease enter the time limit in minutes: ')}
+		elif continuable and action == '5':
+			return {'load_game': True}
+		elif action == '9':
+			self.give_main_options()
+		elif action == '0':
+			sys.exit()
+		else:
+			self.give_secondary_options(continuable, computer)

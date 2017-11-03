@@ -189,6 +189,7 @@ class Word:
 
     if self.word_bonus:
       for s in w_range:
-        word_points *= self.word_bonus.get(s, 1)
+        if not self.aob_list:
+          word_points *= self.word_bonus.get(s, 1)
 
     return word_points
