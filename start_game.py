@@ -24,7 +24,7 @@ from lib.interface import Interface
 
 config = {}
 
-if '-d' in sys.argv:
+if 'with_meaning' in sys.argv:
   config['save_meaning'] = True
 
 Interface(config)

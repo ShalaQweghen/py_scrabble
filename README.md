@@ -1,4 +1,4 @@
-# Command-Line Scrabble
+# PyScrabbleCL
 
 Complete with optional challenge mode, time limit and multiplayer over a network connection. You can choose different options from the game interface.
 
@@ -7,6 +7,8 @@ You can also play against computer.
 If you don't know how to play Scrabble, click [here](https://en.wikipedia.org/wiki/Scrabble) for rules
 
 Clone the game and enjoy it. If you have any feedbacks, I will very much appreciate.
+
+## How to Play
 
 ### Start a game
 
@@ -17,7 +19,7 @@ python3 start_game.py
 
 In order to get the meanings of the words made during the game and save them in a txt file, run:
 ```python
-python3 start_game.py -d
+python3 start_game.py with_meaning
 ```
 
 At the end of the game, word meanings will be fetched from the internet if available and a `words.txt` file will be saved in the root directory of the game.
@@ -60,13 +62,21 @@ Players can set how long a game will last in minutes. After the specified time, 
 
 ### Multilayer game over a network connection
 
-When selected, a server will fire up at port 12345 on your localhost. The player will be prompted about the number of the players that will play the game. When another computers (as many as specified by the player) on the network run 'python3 join_game.rb your_ip_address', a game will start. The connecting computers don't need to have the whole game script. If a game doesn't start, the firewall might be blocking incoming requests. Make sure to make the necessary adjustments.
+When selected, a server will fire up at port 12345 on your localhost. The player will be prompted about the number of the players that will play the game. When another computers (as many as specified by the player) on the network run `python3 join_game.rb <your_ip_address>`, a game will start. If a game doesn't start, the firewall might be blocking incoming requests. Make sure to make the necessary adjustments.
+
+The joining player can also have the script find the server automatically by running `python3 join_game.rb auto`. It might not work on networks which can assign more than 256 IP addresses (campus wifi and such). It might work if only the last part of the assigned IPs changes.
+
+If a player on an OS X machine wants to join a game on LAN automatically, it is recommended to increase the size of open files. The limit is 256 on new versions and it will cause `OSError: [Errno 24] Too many open files` because _Join a Game (Auto)_ uses threads to scan all the available IP's on LAN. In order to increase the limit, use `ulimit -n <new_limit>`. Anything above 300 should suffice.
 
 ### Playing against computer
 
 Computer goes through permutations of letters on its rack and picks the valid move with the most points. A turn for computer takes about 1 minute 20 seconds (on i5 1.6 GHz with 8 GB RAM) depending on the computer.
 
-### Screenshots
+## License
+
+This software is licensed under the [GNU General Public License 3.0](https://www.gnu.org/licenses/gpl-3.0.txt).
+
+## Screenshots
 
 ![](pics/pic_1.png)
 ![](pics/pic_2.png)
