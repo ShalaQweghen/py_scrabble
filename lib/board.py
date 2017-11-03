@@ -1,3 +1,7 @@
+# Copyright (C) 2017  Serafettin Yilmaz
+#
+# See 'py_scrabble.pyw' for more info on copyright
+
 import re
 
 class Board:
@@ -105,33 +109,50 @@ class Board:
 			return self._square_right(square)
 
 	def occupied(self, square, direction, func):
-		return ord(self.board.get(func(square, direction), ['.'])[0]) in range(65, 91)
+		# Find the ascii value of the letter on the square.
+		# There might be a bonus identifier on the spot.
+		# Just in case we grab the first character.
+		# If the square is out of range of the board, '.' is given
+		letter_ascii = ord(self.board.get(func(square, direction), '.')[0])
+
+		# Check if letter_ascii is a capital letter
+		return letter_ascii in range(65, 91)
 
 	def square_occupied(self, square, direction):
-		return self.occupied(square, direction, self.up_or_left) or self.occupied(square, direction, self.down_or_right)
+		flag1 = self.occupied(square, direction, self.down_or_right)
+		flag2 = self.occupied(square, direction, self.up_or_left)
+
+		return flag1 or flag2
 
 	def square_not_occupied(self, square, direction):
-		return not self.occupied(square, direction, self.up_or_left) and not self.occupied(square, direction, self.down_or_right)
+		flag1 = not self.occupied(square, direction, self.up_or_left)
+		flag2 = not self.occupied(square, direction, self.down_or_right)
+
+		return flag1 and flag2
 
 	def _square_up(self, square):
+		# Number part of a spot increases as it goes up
 		if len(square) == 2:
 			return square[0] + str(int(square[1]) + 1)
 		else:
 			return square[0] + str(int(square[1:]) + 1)
 
 	def _square_down(self, square):
+		# Number part of a spot decreases as it goes up
 		if len(square) == 2:
 			return square[0] + str(int(square[1]) - 1)
 		else:
 			return square[0] + str(int(square[1:]) - 1)
 
 	def _square_left(self, square):
+		# Letter part of a spot increases as it goes left
 		if len(square) == 2:
 			return chr(ord(square[0]) - 1) + square[1]
 		else:
 			return chr(ord(square[0]) - 1) + square[1:]
 
 	def _square_right(self, square):
+		# Letter part of a spot decreases as it goes right
 		if len(square) == 2:
 			return chr(ord(square[0]) + 1) + square[1]
 		else:

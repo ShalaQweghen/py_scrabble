@@ -9,7 +9,7 @@ def save(game):
 
   filename = ask_filename(game)
 
-  while os.path.exists('./saves/' + filename + '.obj'):
+  while os.path.exists('./saves/' + filename + '.pickle'):
     game.current_player.output.write('\n' + filename +  ' already exists.\n')
     game.current_player.output.flush()
     filename = ask_filename(game)
@@ -35,7 +35,7 @@ def save(game):
   data['words_list'] = game.words_list
   data['save_meaning'] = game.save_meaning
 
-  file = open('./saves/' + filename + '.obj', 'wb')
+  file = open('./saves/' + filename + '.pickle', 'wb')
   pickle.dump(data, file)
 
 def load(game):
@@ -43,18 +43,18 @@ def load(game):
     print('\nThere are no save files. Starting a new game...')
     start_anew(game)
 
-  file_list = subprocess.check_output('ls saves | grep obj', shell=True)
+  file_list = subprocess.check_output('ls saves | grep pickle', shell=True)
 
   print('\nFiles in the saves folder:\n')
   print(file_list[:-1].decode('utf-8'))
 
-  filename = input('\nWhat is the name of your file without .obj? ')
+  filename = input('\nWhat is the name of your file without .pickle? ')
 
-  if not os.path.exists('./saves/' + filename + '.obj'):
+  if not os.path.exists('./saves/' + filename + '.pickle'):
     print('\nNo such file. Starting a new game...')
     start_anew(game)
 
-  file = open('./saves/' + filename + '.obj', 'rb')
+  file = open('./saves/' + filename + '.pickle', 'rb')
   data = pickle.load(file)
 
   game.board = data['board']

@@ -95,10 +95,6 @@ def join_game(option):
   server.close()
 
 try:
-  opt = sys.argv[1]
+  join_game(sys.argv[1])
 except IndexError:
   print('Usage: python3 join_game.py <ip_address>\n       python3 join_game.py auto')
-else:
-  join_game(opt)
-
-
