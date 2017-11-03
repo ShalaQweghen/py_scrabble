@@ -198,11 +198,31 @@ class Game:
 		return time.time() >= self.end_time
 
 	def decide_winner(self):
-		winner = self.current_player
+		bonus_getter = None
+		bonus = 0
 
 		for p in self.players_list:
-			if p.score > winner.score:
-				winner = p
+			if len(p.letters) == 0:
+				bonus_getter = p
+			else:
+				subt = 0
+
+				try:
+					for l in p.letters:
+						subt += self.word.letter_points[l]
+
+					player.update_score(-subt)
+				except AttributeError:
+					pass
+
+				bonus += subt
+
+		if bonus_getter:
+			bonus_getter.update_score(bonus)
+
+		scores = [player.score for player in self.players_list]
+		points = max(scores)
+		winner = self.players_list[scores.index(points)]
 
 		return winner
 
