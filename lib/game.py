@@ -1,6 +1,10 @@
+# Copyright (C) 2017  Serafettin Yilmaz
+#
+# See 'py_scrabble.pyw' for more info on copyright
+
 import random, time, sys
 
-import lib.helpers as helpers
+import lib.general_helpers as helpers
 
 from lib.bag import Bag
 from lib.board import Board
@@ -252,16 +256,19 @@ class Game:
 	def enter_game_loop(self):
 		try:
 			self.initialize_game()
+
 			while self.racks_not_empty() and self.passes != 3 * self.players:
 				try:
 					self.initialize_turn()
 					self.play_turn()
 				except KeyboardInterrupt:
 					answer = input('\nAre you sure about cancelling the game (y/n) ?: ').upper().strip()
+
 					if answer.startswith('Y'):
 						sys.exit()
 					else:
 						self.turns -= 1
+
 			self.end_game()
 		except (BrokenPipeError, ConnectionResetError):
 				for p in self.players_list:
